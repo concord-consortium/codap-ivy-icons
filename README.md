@@ -16,7 +16,7 @@ See how the fonts look, and what their CSS class names are at the
 
         <head>
          …
-         <link rel="stylesheet" href="style.css">
+         <link rel="stylesheet" href="CodapIvy/codap-ivy-fonts.css">
          …
         </head>
 
