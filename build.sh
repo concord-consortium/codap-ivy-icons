@@ -40,7 +40,7 @@ then
 else
   echo "cloning building-models repo in $DISTDIR"
   rm -rf "$DISTDIR/*" &&\
-  git clone git@github.com:concord-consortium/building-models.git $DISTDIR &&\
+  git clone git@github.com:concord-consortium/codap-ivy-icons.git $DISTDIR &&\
   cd $DISTDIR &&\
   echo "checking out gh-pages branch" &&\
   git checkout gh-pages
@@ -56,11 +56,16 @@ cd $HERE
 # 4) Build our project using gulp into the dist folder
 echo "Copying Demo Files …"
 echo "$SHA built on $DATE" >> $DISTDIR/buildinfo.txt
-ENVIRONMENT=$DEPLOY_ENV gulp build-all --production --buildInfo '$SHA built on $DATE' &&\
-cp -r ./CodapIvy/* $DISTDIR 
+# ENVIRONMENT=$DEPLOY_ENV gulp build-all --production --buildInfo '$SHA built on $DATE' &&\
+cp -r ./CodapIvy/* $DISTDIR
+cd $DISTDIR
+ln demo.html index.html
+cd $HERE
 
 # # 5a) Either Deploy Production to S3,
-# if [[ $DEPLOY_ENV =~ "pro" ]]
+if [[ $DEPLOY_ENV =~ "pro" ]]
+  then
+    echo "SORRY S3 PUSH NOT IMPLEMENTED"
 # then
 #   echo
 #   echo Deploying to S3
@@ -68,12 +73,12 @@ cp -r ./CodapIvy/* $DISTDIR
 #   s3_website push
 #
 # # 5b) Or Deploy Staging to gh-pages
-# else
-#   echo
-#   echo Deploying to gh-page
-#   echo
-#   cd $DISTDIR
-#   git add * &&\
-#   git commit -a -m "deployment for $SHA built on $DATE" &&\
-#   git push origin gh-pages
-# fi
+else
+  echo
+  echo Deploying to gh-page
+  echo
+  cd $DISTDIR
+  git add * &&\
+  git commit -a -m "deployment for $SHA built on $DATE" &&\
+  git push origin gh-pages
+fi
